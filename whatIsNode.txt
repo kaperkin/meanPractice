@@ -1,0 +1,1 @@
+Nodejs is an open-source project in collaboration with the Linux Foundation which allows for use of JavaScript in server-side applications. Node is non-blocking, and can be used to create web servers, or stand-alone server-side applications.

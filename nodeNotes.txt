@@ -1,0 +1,354 @@
+From https://youtu.be/pU9Q6oiQNd0
+
+What is nodejs?
+	-Took JS from browser and allowed it to run on computer using Google Chrome V-8 engine
+	-Can create servers, access files
+	-Anythin you can do with PHP or Ruby on Rails
+	
+What can we use it for?
+	-Utilities on the machine
+		-Gulp, Grunt, yoeman 
+		-concat and build JS files
+	-A Web Server
+		-instead of using PHP or Python/Django
+		-using Koa or Express framwork
+		-to built web application
+		
+When you run node locally in the console it is different than running it in the browser.
+	-In the browser everything is related to the window
+	-In the console there is no window object
+		-Window will throw a reference error
+		-There is a 'global' object
+	-In the Console there is no document Object
+		-There is a process object instead
+		
+Modules:
+	-How you load one file into another
+		-uses require
+		-var requiredFile = require(./FileIWant.js)
+			- './' means file in same directory
+			
+	To export modules:
+		-module.exports is an object that you build by adding properties, 
+			-such as:
+				module.exports.a = 2
+				module.exports.b = "hello world!"
+		-You can also overwrite the module.exports object by making it a function
+			-module.exports = function(){
+				console.log('Hello World')
+				}
+
+Node Package Manager (npm)
+	-allows you to download and manage packages
+	-can require packages in scripts that you have installed with npm
+	-easy was to install common things
+	
+	-npm init will install a package JSON file in the project
+		-npm install with flag -S to save in package.json
+		-then you don't need the node modules
+			-but then you can npm install and it will install the packages you have required
+				-(NOT REALLY SURE HOW THIS WORKS?WHY YOU WOULD USE IT)
+	
+HTTP:
+	-REQUIRE with var http = require('http');
+	-SET UP SERVER with var server = http.createServer(function(){
+	
+		})
+	-LISTEN set server to listen on (Port 3000 for node stuff usually)
+		server.listen(3000);
+		
+	-CREATE WEB SERVER add to server set up
+		var server = http.createServer(function(request, response){
+			console.log('Got a request');
+			response.write('hi');
+			response.end();
+			});
+		-this sets the server to take in a request and give a response
+		-the server will continue to listen until you tell it to stop listening
+
+///////////////////////////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+From https://nodejs.org/en/docs/guides/anatomy-of-an-http-transaction/
+
+Anatomy of an HTTP Transaction
+
+Create Server
+ -All node apps will need to have a server at some point.
+ -This is done using createServer
+	
+	// this loads the http object
+	var http = require('http');
+	
+	// this calls the createServer method on the http object
+	// createServer has a callback function that takes in the request
+	// and response and then does stuff with it ('magic happens here')
+	var server = http.createServer(function(request, response){
+		//magic happens here!
+	});
+	
+	-The callback function from createServer is called the request handler
+		-It is called this because it is called once for every http request made to the server object
+
+	-The server object returned by creeateServer is an EventEmitter
+	-In order for the server object to do anything, the listen method needs to be called on it, passing in the port to listen on.
+	
+Method, URL, and Headers
+- Node has properties on the request object, such as request.method and rquest.url
+	-the request object is an instance of IncomingMessage
+	- The method will be a normal http method/verb
+	-the url is the full URL without the server, protocal or port
+
+-headers are an object as part of the request object
+	-var headers = request.headers;
+	-headers are always presented in lowercase, this is easier to parse
+	-if headers are repeated, then they may be overwritten or joined with a comma.
+		-this can be problamatic, so rawHeaders is available
+
+Request Body
+-Getting to the request body data is a bit more involved than accessing the request headers
+
+-The request object implements the ReadableStream interface.
+	-this can be listened to or piped elsewhere
+	-Can grab data out of the stream by listening to the stream's 'data' and 'end' events
+	
+	-The chunck emitted in each 'data' event is a Buffer.
+		-If you know the data chunk (Buffer) is going ot be a string, the bestthing is to collect it into an array and then concat and stringify it at the 'end'
+		
+		CODE EXAMPLE
+		
+		// create empty array
+		var body = [];
+		
+		// on a request, take in the data. callback function
+		//takes in a chunck of data
+		request.on('data', function(chunk){
+		
+			//add the chunk of data to body array
+			body.push(chunk);
+			
+		//at the end of the request, callback function initiated
+		}).on('end', function(){
+		
+			//concat body array, stringify it, set to value of body
+			body = Buffer.concat(body).toString();
+		});
+		
+		-This can be simplified using concat-stream or body on npm. It can hide away the logic
+
+Errors
+-Since the request object is a ReadableStream, it is also an EventEmitter and behaves as one when an error happens
+
+-An error in the request stream will emitte an 'error' event on the stream
+	-If you don't have an event listener for the error event, the error will be thrown which could crash the Node program
+	
+	-It's important to have an error event listener on request streams, even if just to console.log it
+	
+	CODE EXAMPLE
+	
+	//on a request if there is an error callback function callled
+	request.on('error', function(err){
+	
+		//prints error message and stack to the console
+		console.log(err.stack);
+	});
+		
+HTTP Status Code
+-If it's not set the status code will default to 200
+-Can set the status code by response.statusCode = 404;
+
+Setting Response Headers
+-Headers are set through method setHeader
+-When setting headers:
+	-they are case insensitive
+	-If set more than once, the last value set will be sent
+	
+Header Data
+-"implicit headers" means that you are relying on node to send the headers
+-Can explicitly write the headers to the response stream using method writeHead
+	-writeHead writes status code and headers to the stream
+	
+	CODE EXAMPLE
+	
+	response.writeHead(200, {
+		'Content-Type': 'application/json',
+		'X-Powered-By': 'bacon'
+	});
+	
+Sending Response Body
+-Since the response object is a WritableStream, writing a response body out to the client is just a metter of iusing the usual stream methods
+
+	CODE EXAMPLE....KINDA
+	
+	//writes to the client(browser);
+	response.write('<html>');
+	response.write('<body>');
+	response.write('<h1>Hello, World!</h1>');
+	response.write('</body>');
+	response.write('</html>');
+	//ends the response
+	response.end();
+	
+	-the response.end() function can also take data to send.
+	-The above code could be simplified to:
+		response.end('<html><body><h1>Hello, World!</h1></body></html>');
+
+-It is important to set the status and headers BEFORE you start writing chunks of data to the body since headers come before the body in HTTP responses
+
+-the response stream can also emitt errors which will need to be listened for and delt with
+
+CODE EXAMPLE
+
+-A server that sends back all of the data that was sent to us by the user.
+		-the data will be formatted as JSON using JSON.stringify
+		
+		
+		var http = require('http');
+		
+		http.createServer(function(request, response){
+		
+			var headers = request.headers;
+			var method = request.method;
+			var url = request.url;
+			var body = [];
+			
+			request.on('error', function(err){
+				console.error(err);
+			}).on('data', function(chunk){
+				body.push(chunk);
+			}).on('end', function(){
+				body = Buffer.concat(body).toString();
+				
+				//Beginning of new stuff
+				
+				response.on('error', function(err){
+					console.error(err);
+				});
+				
+				response.statusCode = 200;
+				response.setHeader('Content-Type', 'application/json')
+				//Note: the two lines above could be replaced with this next one:
+				// response.writeHead(200, {'Content-Type':'application/json'})
+
+				var responseBody = {
+				  headers: headers,
+				  method: method,
+				  url: url,
+				  body: body
+				};
+				
+				response.write(JSON.stringify(responseBody));
+				// Note: the 2 lines above could be replaced with this next one:
+				// response.end(JSON.stringify(responseBody))
+
+		// END OF NEW STUFF
+			});
+		}).listen(8080);
+		
+Echo Server
+
+-sends whatever data is received in the request back in the response
+-Only need to grab the data from the request stream and write it to the response stream
+
+		CODE EXAMPLE
+		
+			var http = require('http');
+
+			http.createServer(function(request, response) {
+			  var body = [];
+			  request.on('data', function(chunk) {
+				body.push(chunk);
+			  }).on('end', function() {
+				body = Buffer.concat(body).toString();
+				response.end(body);
+			  });
+			}).listen(8080);
+			
+		-If we only want to send this echo when:
+				-the request.method === GET
+				-the URL === /echo
+				
+			else:
+				-respond with 404
+				
+		CODE EXAMPLE
+		
+		var http = require('http');
+
+		http.createServer(function(request, response) {
+		  if (request.method === 'GET' && request.url === '/echo') {
+			var body = [];
+			request.on('data', function(chunk) {
+			  body.push(chunk);
+			}).on('end', function() {
+			  body = Buffer.concat(body).toString();
+			  response.end(body);
+			})
+		  } else {
+			response.statusCode = 404;
+			response.end();
+		  }
+		}).listen(8080);
+		
+		-checking the URL in this way is  form of "routing"
+			-routing can be as simple as switch stements or as complex as frameworks such as express
+				-a framework that does routing and nothing else is router
+			
+		-To simplify this further:
+				-use pipe to 'pipe' the data from the ReadableStream to the Writable Stream (request to response)
+				
+				CODE EXAMPLE
+				
+				var http = require('http');
+
+				http.createServer(function(request, response) {
+				  if (request.method === 'GET' && request.url === '/echo') {
+					// pipe the request data into the response object
+					request.pipe(response);
+				  } else {
+					response.statusCode = 404;
+					response.end();
+				  }
+				}).listen(8080);
+				
+Putting It All Together...Finally
+
+	CODE EXAMPLE
+
+	//require http module
+	var http = require('http');
+
+	// create server with callback function
+	http.createServer(function(request, response) {
+	
+	  //on request error callback function
+	  request.on('error', function(err) {
+		//console the error to stderr
+		console.error(err);
+		//set status code 400
+		response.statusCode = 400;
+		//end the response
+		response.end();
+	  });
+	  // response error callback function
+	  response.on('error', function(err) {
+		//console the error to stdout
+		console.error(err);
+	  });
+	  //if GET request and URL of /echo
+	  if (request.method === 'GET' && request.url === '/echo') {
+		//pipe data from request into response
+		request.pipe(response);
+		//otherwise
+	  } else {
+		//set status code 404
+		response.statusCode = 404;
+		//end response
+		response.end();
+	  }
+	  //listen on port 8080
+	}).listen(8080);
+
+	-In a real-life situation, you'd want to dig in the error handling more and give out more information
+	
+//////////////////////////////////////////////////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\

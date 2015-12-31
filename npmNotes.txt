@@ -1,0 +1,91 @@
+NPM Docs: https://docs.npmjs.com/
+
+NPM 
+-Used to stand for Node Package Manager
+-Now doesn't stand for anything, because it has evolved to handle packages for all of JavaScript, not jus Node
+
+To see available commands:
+	- npm
+	
+To get help on a command:
+	- npm <command> -h
+	
+To install:
+	- npm install <package name>
+	
+	-Sometimes you will need another flag, look in the error list
+	
+To install globally:
+	- npm install <package name> -g
+	
+To uninstall:
+	- npm uninstall <package name>
+	
+Managing Package Dependencies
+	Why:
+		-so you don't upload to github, or use git to track
+		-to make sure packages stay up date
+		-will help other people use your code
+	
+	How:
+		-create a package.json file for the program	
+		- run command npm init
+			- this will walk you though creating a package.json file
+			-will cover most common items and tries to guess sensible defaults
+			- command npm help json for documentation
+			-use 'npm install <package name> --save' to install a package and save it as a dependency in the package.json file
+			
+		-When you upload to git, have node modules in .gitignore, but upload the packaje.json
+				-create .gitignore file
+				-put path to thing to ignore into .gitignore file
+	To install from npm init
+		- npm install 
+		- this should install the dependencies of the package.json
+		
+Development Dependencies
+-dependencies for the development process but will not be needed for deployment
+	-such as testing files	
+	- to install these:
+		- npm install <package name> --save-dev	
+		-it will be saved into a special 'dev dependencies' area of the package.json
+
+NODE ENV
+-can specify node environment by:
+	- NODE_ENV=production npm install
+	- it will install dev dependencies by default
+			
+Updating Packages with NPM
+	Semantic versioning (SemVer)
+		int1.int2.int3
+		int1 = major release
+		int2 = minor release, should still be backwards compatible
+		int3 = patch fixes
+		
+		MAJOR.MINOR.PATCH
+		
+	In package.json a ^ before the SemVer of dependencies tells npm to install the latest minor relase
+	
+	In package.json a ~ before the SemVer of dependencies tells npm to install the latest patch relases
+	
+	Without a ^ or ~, npm will only install the version listed
+	
+	SemVer is a guideline, not a mandate
+	
+Checking if a version is pout of date:
+	npm outdated
+	-will list the outdated package, the version you have, and the current version
+	
+To update a package:
+	- npm update <package name> -g
+
+Uninstall packages
+- npm uninstall <package-name>
+
+To uninstall and remove from package.json
+-npm uninstall <package-name> --save
+
+TO uninstall and remove from package.json and dev dependencies
+- npm uninstall <package-name> --save-dev
+
+To uninstall global package
+- npm uninstall <package-name> -g

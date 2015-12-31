@@ -1,0 +1,32 @@
+From: https://www.youtube.com/watch?v=uL98RHOWr1I&list=PLQw6R3B2BPb3QARt1QXMMVfAXmyyaY-dF&index=1
+
+Node TCP Server Basics and Echo Server
+-TCP servers are created in Node by using the module 'net'
+
+CODE EXAMPLE
+
+var tcp = net.createServer(function(socket){});
+
+-Socket takes the place of request and response. 
+	-reading from socket you are reading from the client
+	-writing to socket writes to the client
+	-socket is bi-directional
+	
+	CODE EXAMPLE
+		
+		//create net server with callback 
+		net.createServer(function(socket){
+			//socket from client on data event	
+			socket.on('data', function(data){
+				//sock to client write the data
+				socket.write('Server Reply: ' + data);
+			})
+		})
+
+-When the server receives a request, it calls the callback function
+
+-Socket is an EventEmitter
+		-can listen for an event
+			-such as socket.on('error', console.error);
+			
+			

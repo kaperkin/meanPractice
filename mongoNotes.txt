@@ -1,0 +1,125 @@
+mongo --host 127.0.0.1 --port 27017
+to connect to the db shell
+
+systemctl status mongod.service
+systemctl disable mongod.service
+^ that prevents it from coming up on boot
+
+I made you a new db called toaster_bunny
+*-:3
+
+TO ACCESS MONGO:
+	- mongo run
+	- ^C to exit
+	Mongo daemon runs mongo database
+	mongo run command runs mongo shell which acts as access point ot database
+	
+	Commands for Mongo Shell
+		- show dbs 
+			-lists databases mongo has
+			-local db handles internal stuff for mongo
+		-use <new db name>	
+			-creates new db named whatever you have between <> and switches to it
+			-will not show in show dbs intil it has data in it	 
+		-db.post.insert({JSON OBJECT})	
+			-posts collection
+			-posts Document
+		-show collections
+			- will show collections in db
+		-db.post.find()	
+			- will show documents in post collection
+			-db.posts.find()[2]
+				-finds 3rd post
+			-db.posts.find().limit(2)
+				-limits how many posts are returned
+			-db.posts.find().pretty()
+				-will prettify the JSON-type object
+		
+		Save Dovuments as vars
+			- var post = db.posts.find()[1]
+				-saves 2nd post as var post
+			-can then access fields using dot notation
+				-post.<field name>
+				
+		-db.collection.count()
+			- returns the number of documents in a collection		
+					
+			
+
+MONGO BASICS (Treehouse)
+
+What Mongo is:
+	-a NoSQL database
+	-Not Only SQL
+	
+	Differences between SQL and NoSQL
+		-SQL stores data in tables and has schema (relational?)
+		-NoSQL stores data in a variety of formats and are less bound to schema controls.
+		
+		-SQL have standard (mostly) unified language that they are named for 
+			-Structured Query Language
+	
+	Reasons to use Mongo
+		- Makes development fast because it does not have a schema
+		-easy to change and maintain because you don't have to migrate the schema
+		-syntatically simple query language is easy to use because it looks more like a functional programming language than a query language
+		-rapidly and widely adopted
+
+Mongo Documents:
+	-Documents are unique records in Mongo
+		-A lot like JSON objects
+		
+		EXAMPLE:
+			{_id: 53467289402,
+			firstname: "Richard",
+			lastname: "Feynman"}
+			
+			-Mongo will create _id when you create a Document
+			- the _id is how the Document will be uniquelly identified
+		
+		-_id value is special type called ObjectId()
+		-other fields can store many types of values including:
+				-numbers
+				-dates
+				-arrays
+				-objects
+				-strings
+				-Boolean
+				-references to other documents
+
+			EXAPMLE:
+			
+			{
+			_id: 53467289402,
+			name: {
+				first: "Richard", 
+				last: "Feynman"
+				},
+			signupDate: ISODate('2015-10-31TOO: 00:00:00Z'),
+			roles: ['user', 'admin']
+			}
+			
+Default location for Mongo to store data is /data/db	
+
+Data Model
+-Documents and individual records
+-Colections are multiple organized Documents
+	-such as a 'users' collection or 'blog posts' collection
+	-collections organize documents similarly to tables, with each document being a row
+		-if a column (field) is missing from a document (row), you don't have to do anything special
+			-in relational databases you wouyld have to provide a default of null
+			
+TO load files into Mongo DB
+-Enter mongo shell
+-load('<path to file>')
+	-should return true
+	
+	
+QUESTIONS FOR CLARIFICATION
+MongoDB also introduces the concept of sharding, which makes it possible to scale
+the database horizontally as well as vertically. If the application owner needs to
+increase the database capabilities, they could add up more machines into the stack.
+This is a cheaper option compared to investing on RAM of a single machine, which
+will be the case in RDBMS solutions.
+	
+	

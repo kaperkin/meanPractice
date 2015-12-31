@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <file url="file://$PROJECT_DIR$/learnyounode/babysteps.js" libraries="{Node.js v4.2.3 Core Modules}" />
+    <file url="file://$PROJECT_DIR$/learnyounode/filteredls.js" libraries="{Node.js v4.2.3 Core Modules}" />
+    <file url="file://$PROJECT_DIR$/learnyounode/http-client.js" libraries="{Node.js Globals, Node.js v4.2.3 Core Modules}" />
+    <file url="file://$PROJECT_DIR$/learnyounode/http-collect.js" libraries="{Node.js v4.2.3 Core Modules}" />
+    <file url="file://$PROJECT_DIR$/learnyounode/http-file-server.js" libraries="{Node.js v4.2.3 Core Modules}" />
+    <file url="file://$PROJECT_DIR$/learnyounode/http-uppercaser.js" libraries="{Node.js v4.2.3 Core Modules}" />
+    <file url="file://$PROJECT_DIR$/learnyounode/json-api.js" libraries="{Node.js v4.2.3 Core Modules}" />
+    <file url="file://$PROJECT_DIR$/learnyounode/myfirstasynio.js" libraries="{Node.js v4.2.3 Core Modules}" />
+    <file url="file://$PROJECT_DIR$/learnyounode/time-server.js" libraries="{Node.js v4.2.3 Core Modules}" />
+  </component>
+</project>

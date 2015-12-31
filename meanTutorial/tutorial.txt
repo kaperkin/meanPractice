@@ -1,0 +1,56 @@
+From:
+    https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular
+
+-Main file is server.js
+    -this is the main file for Node app
+        Where we will:
+            -configure the application
+            -connect to the database
+            -create Mongoose models
+            -Define routes for the RESTful API
+            -Define routes for the frontend Angular application
+            - Set the app to listen on a port so we can view it in the browser
+
+
+Database
+-this tutorial uses a remote database hosted on Modulus.io
+-modulus provides a url to the database
+    Connect to it through the command mongoose.connect(<URL from modulus goes here>)
+
+Step 1:
+    Create our Node API
+        It will:
+            -get all todos
+            -create a todo
+            -complete and delete todo
+    Todo Model
+            Uses Mongoose
+            Mongoose creates models to interact with Database, like models.py
+            Mongo will automatically generate an _id for each todo that we create
+
+    RESTful API Routes
+        -Express routes will handle API calls
+        -routes make clls to the Database
+
+       HTTP Verb 	URL 	                Description
+        GET 	    /api/todos 	            Get all of the todos
+        POST 	    /api/todos 	            Create a single todo
+        DELETE 	    /api/todos/:todo_id 	Delete a single todo
+
+    -Inside of the API routes, it uses the Mongoose actions to interact with our database
+
+FRONTEND
+        will be defined in index.html and core.js
+
+In core.js, set the angular part of the program
+The controller contains functions to:
+    -get all todos
+    -create a todo
+    -delete a todo
+
+HTML will need to interact with Angular:
+    - assign Angular module and controller
+    -initialize the page by getting all todos
+    -loop over the todos
+    -have a form to create todos
+    -delete todos when they are checked

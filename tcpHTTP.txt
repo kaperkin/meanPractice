@@ -1,0 +1,32 @@
+From http://www.differencebetween.net/technology/internet/difference-between-tcp-and-http/
+
+TCP (Transmission Control Protocol)
+-Operates at higher level than IP (Internest Protocol)
+-Main concerns of TCP are two end systems: 
+	- a web browser
+	-a web server
+-Provides delivery of bytes from a program from one computrer to another computer	
+-Controls size, flowc ontrol, rate of data exchange and network traffic congestion
+
+HTTP (Hypertext Transfer Protocol)
+-Is an Application Layer Protocol
+	-catagorizes other protocols and methods in the arhitectual models of computer networking
+-Commonly found in client server computing
+		-web browsers serve as the client
+		-application running on the computer and hosting the web site serves as the server
+		
+DIFFERENCES
+-TCP works between the IP and the application program
+-HTTP works at the application level
+
+-HTTP session is a sequence of request/response transactions that occur on the network
+	-HTTP opens a TCP and then 'listens' on it
+
+TCP-IP is basis of Internet and many other networks
+HTTP runs on top of TCP, which runs on top of IP
+
+SUMMARY
+
+HTTP sessions open a TCP and listens in on it. TCP connects between the client and the Internet Protocol(IP). HTTP is an Application Layer Protocol; it makes a series of requests on the network.
+
+HTTP > TCP > IP
