@@ -1,0 +1,14 @@
+{
+  "name": "testapp",
+  "version": "1.0.0",
+  "description": "test app from Web Dev with MongoDB and NodeJs Book",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "kaperkin",
+  "license": "ISC",
+  "dependencies": {
+    "mongod": "^1.3.0"
+  }
+}

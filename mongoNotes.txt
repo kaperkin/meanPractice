@@ -11,6 +11,9 @@ I made you a new db called toaster_bunny
 TO ACCESS MONGO:
 	- mongo run
 	- ^C to exit
+	-help
+		-db.<collection>.method
+			-will return help on particular method
 	Mongo daemon runs mongo database
 	mongo run command runs mongo shell which acts as access point ot database
 	
@@ -19,23 +22,28 @@ TO ACCESS MONGO:
 			-lists databases mongo has
 			-local db handles internal stuff for mongo
 		-use <new db name>	
+			- Do not use / \ . * < > " | ? $ : in db names
 			-creates new db named whatever you have between <> and switches to it
 			-will not show in show dbs intil it has data in it	 
+		-db.rename()
+			-will rename db
 		-db.post.insert({JSON OBJECT})	
 			-posts collection
 			-posts Document
+		-db.<collection>.insertOne({JSON Object})
+			-to insert one document	
 		-show collections
 			- will show collections in db
-		-db.post.find()	
+		-db.<collection name>.find()	
 			- will show documents in post collection
-			-db.posts.find()[2]
+			-db.<collection name>.find()[2]
 				-finds 3rd post
-			-db.posts.find().limit(2)
+			-db.<collection name>.find().limit(2)
 				-limits how many posts are returned
-			-db.posts.find().pretty()
+			-db.<collection name>.find().pretty()
 				-will prettify the JSON-type object
 		
-		Save Dovuments as vars
+		Save Documents as vars
 			- var post = db.posts.find()[1]
 				-saves 2nd post as var post
 			-can then access fields using dot notation
@@ -64,6 +72,7 @@ What Mongo is:
 		-easy to change and maintain because you don't have to migrate the schema
 		-syntatically simple query language is easy to use because it looks more like a functional programming language than a query language
 		-rapidly and widely adopted
+		-can store read and write operations across many machines
 
 Mongo Documents:
 	-Documents are unique records in Mongo
@@ -109,17 +118,122 @@ Data Model
 		-if a column (field) is missing from a document (row), you don't have to do anything special
 			-in relational databases you wouyld have to provide a default of null
 			
-TO load files into Mongo DB
+To load files into Mongo DB
 -Enter mongo shell
 -load('<path to file>')
 	-should return true
+
+Collections
+	-how you organize and catagorize documents in MongoDB
+	-db.<collection name>.getCollectionNames()
+		-will show the current collections in the database
+		- useful for exploring dbs
+	-db.<collection name>.getIndexes()
+		-ability to see indexes on a collection
+		-Mongo creates indexes by id to facilitate quick lookup 	
+	-db.<collection name>.createIndex({<key>: 1 or -1}, {<options>})
+		-value of one in key will put docs in ascending order
+			- -1 will put in descending order
+			-this matters in queries where multiple index queries are used to perfom a look-up
+				-called Compound Queries
+	-db.<collection name>.dropIndex('<index name>')
+		-will delete index
+		-unable to delete _id_ index
+				
+Queries
+	-how you query data will determine how you choose to model and store it
+	
+	-db.<collection>.findOne({})
+		-returns one document
+	-db.<collections>.find({}, {<projections>})	
+		-projections are objects where keys are fields to be returned and the values are Booleans of whether they should be returned
+			EXAMPLE:
+				- db.<collection>.find({}, {<value I Don't Want>: false})
+		-If I only want one certain fields
+			EXAMPLE:
+				- db.<collections>.find({}, {<value I Want>: true})
+		-will always return _id_ as well unless told not to
+	-db.<collection>.find({<field>: 'value'})
+		-will the whole object if there is a match, otherwise nothing
+		
+	Query Operator
+		
+	- db.<collection>.find({$or: [{name: "sue"}, {name: "bob"}]}, {<projections>})
+		-takes and array of the options
+		- this would return sue and/or bob doc		
+				
+Updating Data in the Mongo Shell
+To spruce up mongo shell with highlighting:
+	-npm install -g mongo-hacker
+		-it will show version of db, db in use and syntax highlighting
+	
+	Update Docs:
+		-db.<collection>.update({})
+			-starts as simple query
+			-db.<collection>.update({field: value to find}, {operator $set: {<new or updated field>: <value>, <new or updated field>: <value>}})
+				-will show num of docs matching query and num of docs updated by query
+	Upsert			
+		If a document is not found with the query, a new one will be created with the parameters. This is called Upserting		
+	
+Chaining and Advanced methods
+	-can chain methods such as db.<collection>.find({}, {<key>: boolean}).limit(num)
+		-this will only return a num of docs that have the <key>	
+	
+	-Object.keys(db.<collection>.find()[0])
+		-to see the fields in the  first doc
+		
+	-db.<collections>.sort({<field>: 1 or -1})
+			-will sort in ascending (1) or descending (-1) order
+Pagination:
+	- means you display a set of results across different pages
+		-EXAMPLE Portland Switchborad
+	FIRST:
+		-db.<collection>.limit(num)
+	THEN:
+		-db.<collection>.limit(num).skip(sameNumAsTop)
+	-will skip the first two results and return the next two		
 	
 	
-QUESTIONS FOR CLARIFICATION
-MongoDB also introduces the concept of sharding, which makes it possible to scale
-the database horizontally as well as vertically. If the application owner needs to
-increase the database capabilities, they could add up more machines into the stack.
-This is a cheaper option compared to investing on RAM of a single machine, which
-will be the case in RDBMS solutions.
+	Pagination formula: limit = number of records on each page, skip = number of records on each page * page number - 1
+
+	So, with 5 results per page:
+	page 1: limit = 5, skip = 0
+	page 2: limit = 5, skip = 5
+	page 3: limit = 5, skip = 10
+	etc...
+
+Language Drivers
+-listed in documentation: https://docs.mongodb.org/ecosystem/drivers/
+-AKA: clients, libraries, plugins, bindings
+-allow you to work with Mongo through language of choice
+-Use to build applications that use Mongo
+	-Nodejs commonly uses Mongoose
+	
+Sharding
+-As the db grows, will need to store data across multiple machines
+	-called Sharding or Horizontal Scaling
+Reasons to Shard:
+	-too much data for one machine
+	-so multiple databases can handle requests to read and write data
+-can store portions of db 
+	
+-MongoDB also introduces the concept of sharding, which makes it possible to scale the database horizontally as well as vertically. If the application owner needs to increase the database capabilities, they could add up more machines into the stack. This is a cheaper option compared to investing on RAM of a single machine, whichwill be the case in RDBMS (SQL) solutions.
 	
 	
+BUILDING AN APP IN MONGODB
+	Overview
+	clients make requests to app
+	app will be running nodejs
+		-nodejs is c++ running v8 JS
+	app will make request to MongoDB
+	MongoDB will respond with write concern
+		-mongodb is written in c++ as well
+	Mongo shell can be used to admin tasks
+		-also built with c++ on v8
+	
+	Mongo Shell is administratice interface
+	MongoDB-App-Client is production interface
+	 		
+	Nodejs interacts with MongoDB through Language driver API 		
+	
+

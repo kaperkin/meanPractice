@@ -1,0 +1,50 @@
+JavaScript Object Notation
+JSON
+sped: json.org
+
+-composed of key-value pairs
+-keys must be strings
+-keys and values separated by a colon
+-fields are separated with comma
+
+fields can be:
+	-string
+	-number
+		-there is no separate interger type, cannot distinguish beween ints and floats
+	-booleon
+	-object
+	-array
+	
+	-does NOT support dates, need to endcode as string or in nested object
+	
+Fields can be nested probably as much as we want to	
+
+
+Binary JSON
+BSON
+Spec: bson.org
+
+-MongoDB stores data as BSON
+-MongoDB drivers send and recieve data as BSON
+-On app side, the Driver willmap BSON to the native data type of the app, in node's case: JSON
+
+Designed to be:
+	-lightweight
+		-space required to store data is kept to minimun
+	-traversable
+		-supports the variety of operations necessary for readng, writing, and indexing documents
+	-efficient
+		- encoding and decoding from BSON can be perfomed quickly
+		
+BSON extends JSON value types to include intergers, doubles, dates, binary data	for img, etc.
+
+BSON data includes:
+	-length of doc
+	-type of value
+	-length of field value
+	-null terminators for strings
+	
+
+	
+
+	

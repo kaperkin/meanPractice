@@ -1,0 +1,64 @@
+Express
+
+-module that lets us handle requests in a more structured way for nodejs
+-handles routing, request params, etc.
+-provides API
+
+-not really required for Mongodb or node driver, but is often used
+
+To Use:
+
+EXAMPLE:
+	//specifies dependency
+	var express = require('express');
+	//create express app with express module to handle routes
+	var app = express();
+	
+Routes:
+	-routes are urls that we want to support in our app
+	
+		
+	EXAMPLE:
+		app.get('/', function(request, response){
+			res.send('Hello World');
+		});
+		
+		-the '/' is the route to register
+		-the callback function is the route handler
+			-what will be executed when a client calls that route
+		-app.get will register the route
+		
+		
+Fall through route handler
+	-will be executed it route doen't match any other ones
+	-comes at end of routes file
+	
+	EXAMPLE:
+			
+		app.use(function(req, res){
+			res.sendStatus(404);
+		});	
+		-any route not handled by app is handled here
+		
+Listening to client
+
+	EXAMPLE:
+	
+	var server = app.listen(3000, function(){
+		var port = server.address().port;
+		console.log('Express app listening on port %s', port);
+	})
+	
+TEMPLATES
+Documents/nodePractice/meanPractice/MongoUniversity/week_1_introduction.11a3f97c8aad/hello_world_using_templates/hello_world_templates/hello_world_templates$ 
+
+	-a way to send back html page using templates
+	-can programatically update content in template
+	
+URL Parameters
+
+GET Parameters
+-can get params out of url with .get()
+
+POST Parameters
+-use express.bodyParser()

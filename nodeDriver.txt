@@ -1,0 +1,12 @@
+MongoDB Nodejs Driver
+
+What is a driver?
+
+-a library in a specific language that communicates with the database
+
+MongoDB module is a dependency in Node
+-need to install in as a depenedency even if it's installed globally 
+	-it's okay if it throws an error
+
+Mongo shell is synchronous, but driver is async
+
