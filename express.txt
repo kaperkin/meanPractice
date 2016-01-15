@@ -16,6 +16,8 @@ EXAMPLE:
 	
 Routes:
 	-routes are urls that we want to support in our app
+	-sometimes called endpoints
+	-provides a set of instructions to trigger a set of programming
 	
 		
 	EXAMPLE:
@@ -48,6 +50,12 @@ Listening to client
 		var port = server.address().port;
 		console.log('Express app listening on port %s', port);
 	})
+	
+	
+Get Request
+	-client makes get request
+	-server sends back response or error
+		
 	
 TEMPLATES
 Documents/nodePractice/meanPractice/MongoUniversity/week_1_introduction.11a3f97c8aad/hello_world_using_templates/hello_world_templates/hello_world_templates$ 

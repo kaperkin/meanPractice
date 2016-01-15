@@ -18,30 +18,65 @@ TO ACCESS MONGO:
 	mongo run command runs mongo shell which acts as access point ot database
 	
 	Commands for Mongo Shell
-		- show dbs 
-			-lists databases mongo has
-			-local db handles internal stuff for mongo
-		-use <new db name>	
-			- Do not use / \ . * < > " | ? $ : in db names
-			-creates new db named whatever you have between <> and switches to it
-			-will not show in show dbs intil it has data in it	 
-		-db.rename()
-			-will rename db
-		-db.post.insert({JSON OBJECT})	
-			-posts collection
-			-posts Document
-		-db.<collection>.insertOne({JSON Object})
-			-to insert one document	
-		-show collections
-			- will show collections in db
-		-db.<collection name>.find()	
-			- will show documents in post collection
-			-db.<collection name>.find()[2]
-				-finds 3rd post
-			-db.<collection name>.find().limit(2)
-				-limits how many posts are returned
-			-db.<collection name>.find().pretty()
-				-will prettify the JSON-type object
+		DATABASES
+			- show dbs 
+				-lists databases mongo has
+				-local db handles internal stuff for mongo
+			-use <new db name>	
+				- Do not use / \ . * < > " | ? $ : in db names
+				-creates new db named whatever you have between <> and switches to it
+				-will not show in show dbs intil it has data in it	 
+			-db.rename()
+				-will rename db
+		DOCUMENTS
+			-can insert a document with an id by delclaring _id	
+			-db.post.insert({JSON OBJECT})	
+				-posts collection
+				-posts Document
+			-db.<collection>.insertOne({JSON Object})
+				-to insert one document	
+			-db.<collection>.insertMany([{}, {}, {}]);
+				-insert an array of documents/objects
+				-optional secont argument of {'ordered:' false} to make sure it inserts all docs other than error docs
+			-as soon as Mongo encounters an error, it will stop what it was doing, such as encountering duplicate id values	
+			-db.<collection>.update()
+			
+			READING DOCUMENTS
+				-db.<coll>.find({field: 'key you want'})
+				-db.<coll>.find({field: 'key you want', field2: 'key2 you want to further limit'})
+				
+				Nested Documents
+					-db.<coll>.find({"field.subfield": 'key in subfield'})
+						-must wrap field in quotes
+						-can go as deep as you like
+				
+				Array Fields
+					can match on:
+						-entire array
+						-any element
+						-specific element
+						-more complex matches using operators
+						
+					exact match
+						-db.<coll>.find({"field": ['thing1', 'thing2']})
+							-must be in order
+					single element
+						-db.<coll>.find({"field": 'thing1'})
+					specific position
+						-db.<coll>.find(('array.<index>': "Jeff Bridges"))
+									
+			
+		COLLECTIONS		
+			-show collections
+				- will show collections in db
+			-db.<collection name>.find()	
+				- will show documents in post collection
+				-db.<collection name>.find()[2]
+					-finds 3rd post
+				-db.<collection name>.find().limit(2)
+					-limits how many posts are returned
+				-db.<collection name>.find().pretty()
+					-will prettify the JSON-type object
 		
 		Save Documents as vars
 			- var post = db.posts.find()[1]
@@ -234,6 +269,11 @@ BUILDING AN APP IN MONGODB
 	Mongo Shell is administratice interface
 	MongoDB-App-Client is production interface
 	 		
-	Nodejs interacts with MongoDB through Language driver API 		
+	Nodejs interacts with MongoDB through Language driver API
 	
-
+OBJECT _ID FIELD
+	-creates _id by default
+	-How object id is constructed
+		- ObjectID:(date)(machine identifier)(ProcessID)(Counter to ensure id is unique)
+	
+	
