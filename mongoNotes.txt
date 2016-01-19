@@ -17,7 +17,7 @@ TO ACCESS MONGO:
 	Mongo daemon runs mongo database
 	mongo run command runs mongo shell which acts as access point ot database
 	
-	Commands for Mongo Shell
+	COMMANDS for Mongo Shell
 		DATABASES
 			- show dbs 
 				-lists databases mongo has
@@ -62,10 +62,84 @@ TO ACCESS MONGO:
 							-must be in order
 					single element
 						-db.<coll>.find({"field": 'thing1'})
+						
 					specific position
-						-db.<coll>.find(('array.<index>': "Jeff Bridges"))
-									
+						-db.<coll>.find(('arrayField.<index>': "Jeff Bridges"))
+						
+				Comparison Operator
+					-match on basis of a field's value as compared to another value
+					Operators:
+						$gt 	:greater than
+							db.<coll>.find({field: {$gt: <value>}})
+						$exists :matches if it has the field
+							db.<coll>.find({field: {$exists: true or false}})
+						$type	:selects if field is of a certain type
+							db.<coll>.find({field: {$type: 'type of thing you want' }})
+				
+				Logical Operators
+					$or		:joins query clauses with logical 'or'
+						-Takes an array of args as arg
+						db.<coll>.find({$or: [<array of obj args>]})
+					$and	:joins query clauses with logical 'and'
+						-generally don't need to use this as you can use query operator
+						-used when need to specify multiple criteria on same field
+					$not	:joins query clauses with logical 'not'
+					$nor	:joins query clauses with logical 'nor' returns docthat fail to match both
+						
+				Regex Operator
+					-used to match fields with string values
+					db.<coll>.find({'field to match': {$regex: /regexhere/}})
+					
+				Array Operators
+					-designed to work with arrays
+					$all	:matches arrays that contain all ements specified in the array
+						db.<coll>.find({'fieldToMatch': {$all: ['condition', 'condition', 'condition']}})
+					$elemMatch	:selects docs if elements in the array field match all of the $elemMatch conditions
+						db.<coll>.find({'fieldWithArray': {$elemMatch{things to match within the element of the array}}})
+					$size	:selects docs if the array field is specified size
+						db.<coll>.find({'fieldToMatch': {$size: number}})
+				Cursor
+					.find() will iterate through data and display a certain amount. 
+					
+				Projection
+					reducing size of data returned
+					to limit amount of data Mongo sends:
+							supplied as second argument to find command
+					db.<coll>.find({fieldSearch: 'key'}, {'field you want to display (or not) on return': <1 for true, 0 for false-don't display>})		
 			
+		UPDATE DOCUMENTS
+			Field operators
+				$addToSe
+				$pop
+				$pullAll
+				$pull
+				$pushAll
+				$push
+					-adds item to array
+				$inc
+					-increment operator
+				$set
+					-set or update field
+				$setOnInsert
+				$rename
+				$unset
+					-remove field
+				$min
+				$max
+				$currentDate
+			updateOne()
+				-to add new field or update existing doc to existing operator:
+					({fieldToFindDoc: value}, {$set: {newField: value}})
+			updateMany()
+				-will make updates to all docs that match filter
+					updateMany({field: value}, {operator: {field: value}})
+			replaceOne()
+				-filter, and will replace doc with new doc	
+			upsert
+				If Mongo doesn't find the field you query for it will create it. This is called 'upserting'
+				Can avoid this with param {upsert: false}		
+				
+				
 		COLLECTIONS		
 			-show collections
 				- will show collections in db
