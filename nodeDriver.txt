@@ -2,11 +2,36 @@ MongoDB Nodejs Driver
 
 What is a driver?
 
--a library in a specific language that communicates with the database
+	-a library in a specific language that communicates with the database
 
 MongoDB module is a dependency in Node
--need to install in as a depenedency even if it's installed globally 
-	-it's okay if it throws an error
+	-need to install in as a depenedency even if it's installed globally 
+		-it's okay if it throws an error
 
 Mongo shell is synchronous, but driver is async
 
+Node js and CRUD Interface
+	In the Node driver you must require the MongoClient
+		- var MongoClient = require('mongodb').MongoClient;
+		-var assert = require('assert');
+		
+	Connect to Mongo Client
+			-MongoClient.connect('<url of db>', function(err, db){
+					<callback function>
+				})
+				- url of video db would be 'mongodb://localhost:27017/video'
+				-27017 is port number mongo runs at
+	
+	Node will use a cursor to call to MongoDB
+	
+ Field Projection in Node Driver
+		allows you to inculde or exclude fields
+		{'field': 1(toInclude), 'field2': 0(toExclude)}
+		
+		can have performance impact by only returning fields you need in projection
+		
+Query Operators in Node Driver
+
+			library 'command-line-args' allows you to pass command line args that you can use in your app
+			
+Regex in Node Driver

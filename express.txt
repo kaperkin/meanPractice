@@ -52,21 +52,68 @@ Listening to client
 	})
 	
 	
-Get Request
-	-client makes get request
-	-server sends back response or error
+	Get Request
+		-client makes get request
+		-server sends back response or error
 		
 	
 TEMPLATES
-Documents/nodePractice/meanPractice/MongoUniversity/week_1_introduction.11a3f97c8aad/hello_world_using_templates/hello_world_templates/hello_world_templates$ 
+	Documents/nodePractice/meanPractice/MongoUniversity/week_1_introduction.11a3f97c8aad/hello_world_using_templates/hello_world_templates/hello_world_templates$ 
 
-	-a way to send back html page using templates
-	-can programatically update content in template
+		-a way to send back html page using templates
+		-can programatically update content in template
+		
+	URL Parameters
+
+	GET Parameters
+	-can get params out of url with .get()
+
+	POST Parameters
+	-use express.bodyParser()
+
+ROUTES
+	-tell app where to direct user
 	
-URL Parameters
+	EXAMPLE
+	var express = require('express');
+	var posts = require('./mock/posts.json');
 
-GET Parameters
--can get params out of url with .get()
+	var app = express();
 
-POST Parameters
--use express.bodyParser()
+	//here are routes//
+	app.get('/', function(req, res){
+		res.send("<h1>I Love Treehouse!</h1>");
+	});
+
+	app.get('/blog', function(req, res){
+		res.send(posts);
+	});
+	//end of routes//
+	app.listen(3000, function(){
+		console.log("The frontend server is running on port 3000!")
+	});
+	
+Helpful tools for DEBUGGING
+	Nodemon
+		-restarts node when file changes
+	node-inspector
+		-lets you debug node applications from a browser	
+		To use:
+			-run node-debug <path to app>
+		-does not restart server when you change file	
+			
+	Can use these tools together
+		-run node-inspector without params
+		-run nodemon --debug <path to app>
+
+	Setting breakpoints in file
+	
+		EXAMPLE
+		var app = express();
+		//can write a breakpoint for debugging in code such as below:
+		debugger;
+		app.get('/', function(req, res){
+			res.send("<h1>I Love Treehouse!</h1>");
+		});
+		
+		then run nodemon --debug-brk <path to app>

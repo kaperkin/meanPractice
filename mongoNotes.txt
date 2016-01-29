@@ -14,6 +14,9 @@ TO ACCESS MONGO:
 	-help
 		-db.<collection>.method
 			-will return help on particular method
+	mongorestore to import BSOn file into Mongo
+	mongoimport to import human readable json file
+				mongoimport -d <database name> -c <colletion name> <json file>
 	Mongo daemon runs mongo database
 	mongo run command runs mongo shell which acts as access point ot database
 	
